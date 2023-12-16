@@ -41,7 +41,7 @@ in which the authors proposed to use the foreground-extracted silhouette of peop
 
 We define $\bar{c_1}=(c_1^{(x)}, c_1^{(y)}, z_1)$ and $\bar{c_2}=(c_2^{(x)}, c_2^{(y)}, z_2)$ as measured coordinates of
 the two cameras with $z_1$ and $z_2$ are their corresponding heights; $\underline{c_1}=(c_1^{(x)}, c_1^{(y)}, 0)$ and
-$\underline{c_2}=(c_2^{(x)}, c_2^{(y)}, 0)$ are their ground projections; $p_{1i}$ and $p_{2j}$ are intersection between
+$\underline{c_2}=(c_2^{(x)}, c_2^{(y)}, 0)$ are their ground projections; $p_{1i}$ and $p_{2j}$ are intersections between
 the rays $\bar{c_1}o_{1i}$ and $\bar{c_2}o_{2j}$ with the ground plane $z = 0$, respectively.
 While $\bar{c_1}, \bar{c_2}$ are fixed, the two points $p_{1i}, p_{2j}$ can be calculated directly from pixel
 coordinates of $o_{1i}, o_{2j}$ using calibration method and substituting $p^{(z)}=0$ in the camera equation:
@@ -161,7 +161,7 @@ Just copy [``geo_lsqlsa/binary_assignment.py``](geo_lsqlsa/binary_assignment.py)
 
 As I no longer have access to the images nor calibrated cameras, this example will only feature a toy problem.
 Note that to get ground projection of detected keypoints in real scenarios, one must rely on camera calibration,
-and this task is **NOT** covered by our code.
+and this task is **NOT** covered by this code.
 
 ```python
 import numpy as np
