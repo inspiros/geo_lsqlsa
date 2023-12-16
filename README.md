@@ -93,21 +93,22 @@ To simultaneously solve for all possible $N = n \times m$ pairs of $i$ and $j$, 
 general matrices $A, b \in \mathbb{R}^{2N\times N}$:
 
 ```math
-A = \left[\begin{array}{cccc}A_{11} & 0 & \cdots & 0 \\ 0 & A_{12} & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & A_{n_1n_2} \end{array}\right]
+A = \left[\begin{array}{cccc}A_{11} & 0 & \cdots & 0 \\ 0 & A_{12} & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & A_{nm} \end{array}\right]
 ```
 ```math
-b = \left[\begin{array}{cccc}b_{11} & 0 & \cdots & 0 \\ 0 & b_{12} & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & b_{n_1n_2} \end{array}\right]
+b = \left[\begin{array}{cccc}b_{11} & 0 & \cdots & 0 \\ 0 & b_{12} & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & b_{nm} \end{array}\right]
 ```
 
 Then, the optimal solution $\boldsymbol{x^\ast} \in \mathbb{R}^{N\times N}$ is a diagonal matrix of
 $\boldsymbol{{h_{ij}}^\ast}$:
 
 ```math
-\boldsymbol{x^\ast} = \left[\begin{array}{cccc}{\boldsymbol{h_{11}}^\ast} & 0 & \cdots & 0 \\ 0 & \boldsymbol{{h_{12}}^\ast} & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & \boldsymbol{{h_{n_1n_2}}^\ast} \end{array}\right] = (A^T A)^{-1}A^T b
+\boldsymbol{x^\ast} = \left[\begin{array}{cccc}{\boldsymbol{h_{11}}^\ast} & 0 & \cdots & 0 \\ 0 & \boldsymbol{{h_{12}}^\ast} & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & \boldsymbol{{h_{nm}}^\ast} \end{array}\right] = (A^T A)^{-1}A^T b
 ```
 
 Note that in reality, it is better to rely on ``np.linalg.lstsq`` rather than using the analytical formula.
-**Non-Negative Least Squares** solvers can also be used here to enforce positive heights.
+The use of **Non-Negative Least Squares** solvers to enforce positive heights is redundant as we can easily filter out
+such cases as described in the following steps.
 
 Any pair of $o_{1i}$ and $o_{2j}$ could be matched together and produce an optimal matching height
 $\boldsymbol{{h_{ij}}^\ast}$ and distance $\boldsymbol{{d_{ij}}^\ast}$.
@@ -116,7 +117,7 @@ in which the assignment matrix $X$, whose entries $x_{ij} \in \{0, 1\}$ denoting
 between $o_{1i}$ and $o_{2j}$, is found by optimizing:
 
 ```math
-\min_{x\in X} \sum_{i=1}^{n_1} \sum_{j=1}^{n_2} c_{ij} x_{ij}\quad \text{s.t.}\ \sum_{i=1}^{n_1} x_{ij} = 1 \forall i, \sum_{j=1}^{n_2} x_{ij} = 1 \forall j
+\min_{x\in X} \sum_{i=1}^{n} \sum_{j=1}^{m} c_{ij} x_{ij}\quad \text{s.t.}\ \sum_{i=1}^{n} x_{ij} = 1 \forall i, \sum_{j=1}^{m} x_{ij} = 1 \forall j
 ```
 
 In this work, the cost matrix $C$ with entries $c_{ij}$ denoting the probability of association between $i$ and $j$
