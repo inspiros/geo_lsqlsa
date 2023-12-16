@@ -82,12 +82,12 @@ A_{ij} = \left[\begin{array}{c}\frac{c_{1i}^{(x)} - p_{1i}^{(x)}}{z_1} - \frac{c
 b_{ij} = -\left[\begin{array}{c}p_{1i}^{(x)} - p_{2j}^{(x)} \\ p_{1i}^{(y)} - p_{2j}^{(y)} \end{array}\right]
 ```
 
-Subsequently, the analytical solution $\boldsymbol{{x_{ij}}^*} \in \mathbb{R}^{1\times 1}$ to the problem is given by:
+Subsequently, the analytical solution $\boldsymbol{{x_{ij}}^\ast} \in \mathbb{R}^{1\times 1}$ to the problem is given by:
 ```math
-\boldsymbol{{x_{ij}}^*} = \left[\boldsymbol{{h_{ij}}^*}\right] = \left({A_{ij}}^T A_{ij}\right)^{-1}{A_{ij}}^T b_{ij}
+\boldsymbol{{x_{ij}}^\ast} = \left[\boldsymbol{{h_{ij}}^\ast}\right] = \left({A_{ij}}^T A_{ij}\right)^{-1}{A_{ij}}^T b_{ij}
 ```
 
-However, it is not computationally efficient to solve for $\boldsymbol{{x_{ij}}^*}$ of each pair
+However, it is not computationally efficient to solve for $\boldsymbol{{x_{ij}}^\ast}$ of each pair
 $i < n, j < m$ iteratively.
 To simultaneously solve for all possible $N = n \times m$ pairs of $i$ and $j$, as $h_{ij}$ are independent, we define
 general matrices $A, b \in \mathbb{R}^{2N\times N}$:
@@ -99,19 +99,19 @@ A = \left[\begin{array}{cccc}A_{11} & 0 & \cdots & 0 \\ 0 & A_{12} & \cdots & 0 
 b = \left[\begin{array}{cccc}b_{11} & 0 & \cdots & 0 \\ 0 & b_{12} & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & b_{n_1n_2} \end{array}\right]
 ```
 
-Then, the optimal solution $\boldsymbol{{x}^*} \in \mathbb{R}^{N\times N}$ is a diagonal matrix of
-$\boldsymbol{{h_{ij}}^*}$:
+Then, the optimal solution $\boldsymbol{x^\ast} \in \mathbb{R}^{N\times N}$ is a diagonal matrix of
+$\boldsymbol{{h_{ij}}^\ast}$:
 
 ```math
-\boldsymbol{x^*} = \left[\begin{array}{cccc}{\boldsymbol{h_{11}}^*} & 0 & \cdots & 0 \\ 0 & \boldsymbol{{h_{12}}^*} & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & \boldsymbol{{h_{n_1n_2}}^*} \end{array}\right] = (A^T A)^{-1}A^T b
+\boldsymbol{x^\ast} = \left[\begin{array}{cccc}{\boldsymbol{h_{11}}^\ast} & 0 & \cdots & 0 \\ 0 & \boldsymbol{{h_{12}}^\ast} & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & \boldsymbol{{h_{n_1n_2}}^\ast} \end{array}\right] = (A^T A)^{-1}A^T b
 ```
 
 Note that in reality, it is better to rely on ``np.linalg.lstsq`` rather than using the analytical formula.
 **Non-Negative Least Squares** solvers can also be used here to enforce positive heights.
 
 Any pair of $o_{1i}$ and $o_{2j}$ could be matched together and produce an optimal matching height
-$\boldsymbol{{h_{ij}}^*}$ and distance $\boldsymbol{{d_{ij}}^*}$.
-To find the true matches, we plug the derived ${d_{ij}}^*$ in a **Linear Sum Assignment Problem**,
+$\boldsymbol{{h_{ij}}^\ast}$ and distance $\boldsymbol{{d_{ij}}^\ast}$.
+To find the true matches, we plug the derived ${d_{ij}}^\ast$ in a **Linear Sum Assignment Problem**,
 in which the assignment matrix $X$, whose entries $x_{ij} \in \{0, 1\}$ denoting the match or not match relationship
 between $o_{1i}$ and $o_{2j}$, is found by optimizing:
 
@@ -123,18 +123,18 @@ In this work, the cost matrix $C$ with entries $c_{ij}$ denoting the probability
 pair are simply defined as:
 
 ```math
-c_{ij} = \max\left(1 - \frac{\boldsymbol{{d_{ij}}^*}}{d_{\text{threshold}}}, 0\right)
+c_{ij} = \max\left(1 - \frac{\boldsymbol{{d_{ij}}^\ast}}{d_{\text{threshold}}}, 0\right)
 ```
 
 where $d_{\text{threshold}}$ is a hard criteria to zero out the probability of matching between distant pairs.
 Any **Linear Assignment Problem** solver can be used in this step, e.g. ``scipy.optimize.linear_sum_assignment``.
 
 Additionally, once the association is done, we can also approximate the ground position of the object using the
-mean of $\boldsymbol{{t_{1i}}^*}$ and $\boldsymbol{{t_{2j}}^*}$ deduced from the optimal $\boldsymbol{{h_{ij}}^*}$,
+mean of $\boldsymbol{{t_{1i}}^\ast}$ and $\boldsymbol{{t_{2j}}^\ast}$ deduced from the optimal $\boldsymbol{{h_{ij}}^\ast}$,
 optionally weighted by detection confidence scores $\omega_{1i}, \omega_{2j}$:
 
 ```math
-t_{ij} = \frac{\omega_{1i} \boldsymbol{{t_{1i}}^*} + \omega_{2j} \boldsymbol{{t_{2j}}^*}}{\omega_{1i} + \omega_{2j}}
+t_{ij} = \frac{\omega_{1i} \boldsymbol{{t_{1i}}^\ast} + \omega_{2j} \boldsymbol{{t_{2j}}^\ast}}{\omega_{1i} + \omega_{2j}}
 ```
 
 ### Extension to $k$ Views
