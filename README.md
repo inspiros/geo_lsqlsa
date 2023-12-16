@@ -16,8 +16,8 @@ especially developers.
 
 For simplicity, we first consider the two views problem.
 Let us denote the two cameras with $c1$ and $c2$, each installed with an object detector.
-We define $O_1 = \left\{o_{11}, o_{12}, \cdots, o_{1n}\right\}$ and
-$O_2 = \left\{o_{21}, o_{22}, \cdots, o_{2m}\right\}$ as sets of detection results
+We define $O_1 = \left(o_{11}, o_{12}, \cdots, o_{1n}\right)$ and
+$O_2 = \left(o_{21}, o_{22}, \cdots, o_{2m}\right)$ as sets of detection results
 from $c1$ and $c2$ respectively.
 Optionally, we may also constrain $O_1$ and $O_2$ belonging to the same class.
 Given that instances of the detected objects are visually similar, we want to find all assignments between
@@ -57,7 +57,7 @@ must intersect at the same point in 3D coordinates, dubbed _center of the object
 We choose the keypoint to be the center of the bounding box, thus, imposing a symmetrical constraint on the
 detected object (as hooded human's head resembles a perfect sphere).
 
-We assume the height _(from ground to the center)_ of the object (human head in this case) is $h_{ij}$ satisfies
+We assume the height _(from ground to the center)_ of the object (human head in our case) is $h_{ij}$ satisfies
 $h_{ij} \ge 0$.
 With each value of $h_{ij}$ we can find only one pair of $t_{1i}$ and $t_{2j}$ lying on the lines $c_1p_{1i}$ and
 $c_2p_{2j}$.
@@ -89,7 +89,7 @@ Subsequently, the analytical solution $\boldsymbol{{x_{ij}}^*} \in \mathbb{R}^{1
 
 However, it is not computationally efficient to solve for $\boldsymbol{{x_{ij}}^*}$ of each pair
 $i < n, j < m$ iteratively.
-To simultaneously solve for all possible $N = nm$ pairs of $i$ and $j$, as $h_{ij}$ are independent, we define
+To simultaneously solve for all possible $N = n \times m$ pairs of $i$ and $j$, as $h_{ij}$ are independent, we define
 general matrices $A, b \in \mathbb{R}^{2N\times N}$:
 
 ```math
@@ -99,7 +99,7 @@ A = \left[\begin{array}{cccc}A_{11} & 0 & \cdots & 0 \\ 0 & A_{12} & \cdots & 0 
 b = \left[\begin{array}{cccc}b_{11} & 0 & \cdots & 0 \\ 0 & b_{12} & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & b_{n_1n_2} \end{array}\right]
 ```
 
-Then, the optimal solution $\boldsymbol{x^*} \in \mathbb{R}^{N\times N}$ is a diagonal matrix of
+Then, the optimal solution $\boldsymbol{{x}^*} \in \mathbb{R}^{N\times N}$ is a diagonal matrix of
 $\boldsymbol{{h_{ij}}^*}$:
 
 ```math
